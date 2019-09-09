@@ -374,6 +374,9 @@ stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.g
 
 ![principal components analysis](img/genre_pca.png)
 
+![consensus network](img/topics_in_docs.png)
+
+
 
 ## Online tutorials
 
