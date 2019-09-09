@@ -24,7 +24,7 @@
 
 ## Introduction
 
-This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with gneral concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [Online tutorials](#online-tutorials). Also, the tutorial itself is supplemented by [this presentation](https://computationalstylistics.github.io/topic-modeling-workshop/presentation/intro_to_topic_models.html), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
+This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with gneral concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [Online tutorials](#online-tutorials). Also, the tutorial itself is supplemented by [this presentation](https://computationalstylistics.github.io/presentations/topic_modeling_intro/intro_to_topic_models.html), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
 
 The tutorial will cover basic functionalities of the [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/) software. As a dummy dataset, the Shakesperean canon will be used in the form of [raw text files](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus). In the second part, the same dataset will be used to train a topic model using the programming language R and the package [R mallet](https://cran.r-project.org/web/packages/mallet/index.html).
 
