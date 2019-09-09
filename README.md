@@ -65,7 +65,7 @@ In this tutorial, we’ll focus mosty on the simplest tool listed above, namely 
 
 Topic modeling is designed to analyze large collections of texts (documents). Leaving aside the question how large such a collection should be, we’ll focus on a dummmy corpus containing the works by Shakespeare. It can be found in the current GitHub repository, in the subdirectory [`corpus`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus).
 
-The files contain plain texts, one play per file. The procedure will automatically tokenize the strings of characters into words (let's skip here a non-trivial discussion of how the contractions and/or compound words should be treated), which is followed by punctuation marks removal, as well as by convertion of capital letters into lowercase.
+The files contain plain texts, one play per file. The procedure will automatically tokenize the strings of characters into words (let’s skip here a non-trivial discussion of how the contractions and/or compound words should be treated), which is followed by punctuation marks removal, as well as by convertion of capital letters into lowercase.
 
 What is important to know before a topic modeling algorithm is applied, is that the order of words is not relevant for the method. A text sample becomes a “bag of words”, in which only word frequencies and word co-occurrencies matter. Essentially, this means that the relation between any adjacent words in _Hamlet_ by Shakespeare is as meaningful as the relation between the very first and the very last word from the tragedy. Certainly, this holds when _Hamlet_ is analyzed as a monolithic text; different word co-occurence patterns will be discovered when the text is sliced into smaller samples. We’ll compare the quality of topic models based on entire texts and on chunked texts below. The subdirectory [`corpus_1000-word_samples`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus_1000-word_samples) contains the Shakespearean corpus with texts sliced into 1000-word chunks. 
 
@@ -92,6 +92,7 @@ allow
 allows
 almost
 alone
+...
 ```
 
 
@@ -103,32 +104,20 @@ alone
 
 [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/) is a very simple tool, yet somewhat limited when it comes to its functionalities. It requires no programming knowledge and no additional software needs to be installed. In short, it’s a perfect choice to train your first topic model in no time, but sooner of later you’ll probably decide to switch to some more sophisticated options. E.g., check the [next section](#r-and-the-package-mallet) of this tutorial. To use DARIAH Topic Explorer:
 
-* Download the [executable file](https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching the operating system,
+* Download the [executable file](https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching your operating system,
 * Launch the program,
 * Choose the text files to be scrutinized by the LDA algorithm: in our case, it will be the texts by Shakespeare to be found in the subdirectory [`corpus`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus).
-* This is basically enough to start building a topic model, although some additional tweaks will help improve the model’s quality.
+* This is basically enough to start building a topic model, although some additional tweaks will help improve the model’s quality (see below).
 
 
 ![DARIAH Topics Explorer](https://raw.githubusercontent.com/DARIAH-DE/TopicsExplorer/master/docs/img/application-screenshot.png)
 
 
-The default settings do provide some results, but we’d love to have more control on the parameters of the model. First comes the list of stopwords. You can either specify a number of the most frequent words (the default being 100), or provide your own list of stopwords. 
+The default settings do provide some results, but we’d love to have more control on the parameters of the model. First comes the number of topics. The DARIAH Topic Explorer has a default value of 10 topics. However, such a low number of topics to be inferred from the rich Shakespearean dataset, might be not enough to discover its thematic structure. Leaving aside a discussion what the optimal number of topics might be (see Griffiths and Steyvers 2004), the arbitrary value of 25 topics will be used throughout this tutorial. You’ll encouraged, however, to experiment with other values as well. 
 
+Another parameter of the model is the list of stopwords. You can either specify a number of the most frequent words (the default value being 100), or provide your own list of stopwords. Try to use the file [`en.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/en.txt), and train the model again, to see the difference.
 
-
-
-
-
-
-
-
-
-... then experiment with other stopword lists
-
-
-
-An excerpt from _The Merchant of Venice_:
-
+Particular topics are far better now, althouth it is difficult to define what “better” really means in this context. At least, the topics _look_ better for a human observer. However, most of the topics revolve around the words in which we can recognize names of Shakespearean characters. And indeed, it turns out that the speakers’ names were all taken into account when inferring the topics. For instance, an excerpt from _The Merchant of Venice_ looks as follows:
 
 
 ```
@@ -153,15 +142,7 @@ That curtsy to them, do them reverence,
 As they fly by them with their woven wings.
 ```
 
-
-
-
-
-`ANTONIO` and `SALARINO`
-
-
-
-A fragment from _Hamlet_ shows a different way of indicating speakers:
+We would definitely like to exlude the words `ANTONIO` and `SALARINO` from the analysis, because they will bias the results. By extention, we’d like to exclude the all-capital-letter words. It solves the problem, but only partially. The following fragment from _Hamlet_ shows a different way of indicating the speakers:
 
 ```
 SCENE. Elsinore.
@@ -188,22 +169,9 @@ And I am sick at heart.
 ​
 ```
 
+A very rough list of Shakespearean names, including the abbreviated forms, are saved into the file [`names_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/names_shakespeare.txt). Try to add these names to the stopword list and re-traing the model. Again, the topics seem to be better, or at least more content-related, but still something is wrong here... To cut long story short, there are still some stopwords to be removed, and these include mostly archaic forms (e.g. _thou_, _thy_, _thee_, _hath_, _doth_), stage directions (e.g. _enter_ or _exeunt_), and some corpus-specific contractions. The list of these stopwords can be found in the file [`stopwords_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/stopwords_shakespeare.txt). 
 
-
-
-Whatever is the case, the names should be excluded from the analysis
-
-
-
-A very rough list of proper names here: ......
-
-Same about words such as _enter_ or _exeunt_
-
-
-
-
-
-(there exist more sophisticated ways of excluding stop words, such as tf/idf weighting)
+Try to play with the above three different stopword lists, to see how the respective models differ. Try also to combine all the stopwords into one – or simply use the file [`combined_stopwords.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/combined_stopwords.txt). We’re definitely getting somewhere, even if an uneasy question becomes more and more evident: So, do I have to manipulate my stopword list until my topics look OK? Well, there exist more sophisticated ways of excluding stopwords, such as tf/idf weighting, but they won’t be covered in this tutorial. 
 
 
 
@@ -215,9 +183,6 @@ Same about words such as _enter_ or _exeunt_
 
 
 
-2.  Określenie parametrów modelu.
-
-   - większa liczba tematów jest trudniej interpretowalna przez ludzi (Chang 2009)
 
    
 - text chunking
@@ -333,9 +298,7 @@ wordcloud(names(current.topic), current.topic, random.order = FALSE, rot.per = 0
 ![topic 6](img/topic_6.png)
 
 
-Please keep in mind that in your case, the numbers assigned to the topics will probably be different. This is due to the fact that the LDA algorithm assigns the topics IDs randomly. Moreover, the word proportions in particular topics might differ as well, due to the random seeding of the word proportions at the first interation.
-
-
+Please keep in mind that in your case, the numbers assigned to the topics will probably be different. This is due to the fact that the LDA algorithm assigns the topics IDs randomly. Moreover, the word proportions in particular topics might differ as well, due to the random seeding of the word proportions at the first interation. Saving a plot in R is a bit more tricky, and saving all possible plots (all the topics) might be cumbersome. The following snippet involves a loop that does the trick:
 
 
 ``` R
@@ -343,25 +306,16 @@ no.of.words = 50
 for(i in 1 : no.of.topics) {
     topic.id = i
     current.topic = sort(topic.words[topic.id,], decreasing = T)[1:no.of.words]
-    png(file = paste("topic_", topic.id, ".png", sep=""))
+    png(file = paste("topic_", topic.id, ".png", sep = ""))
     wordcloud(names(current.topic), current.topic, random.order = FALSE, rot.per = 0)
     dev.off()
 }
 
-
 ```
 
-
-Caveat: the files will be saved in your current directory without checking what’s inside. It can clutter your hard-drive and/or overwrite some exsting files!
-
+Caveat emptor: the files will be saved in your current directory without checking what’s in that directory. It can clutter your hard-drive and/or overwrite the exsting files!
 
 
-
-
-
-```R
-topic.words = read.csv("https://raw.githubusercontent.com/computationalstylistics/diachronia/master/dane/abo_albo.csv", header = TRUE, row.names = 1)
-```
 
 
 
@@ -385,8 +339,10 @@ plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probabili
 ```
 
 
+![Romeo and Juliet](img/topics_romeo.png)
 
-What about the beginning of _The Tempest_?
+
+What about the beginning of _A Midsummer Night’s Dream_?
 
 
 
@@ -397,6 +353,8 @@ plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probabili
 
 ```
 
+
+![A Midsummer Night’s Dream](img/topics_dream.png)
 
 
 
@@ -412,9 +370,9 @@ stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.g
 
 
 
+![cluster analysis](img/genre_clusters.png.png)
 
-
-
+![principal components analysis](img/genre_pca.png.png)
 
 
 ## Online tutorials
@@ -445,3 +403,4 @@ stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.g
 
 **Blei, D.M., Ng, A.Y. and Jordan, M.I.** (2003). [Latent Dirichlet allocation](http://jmlr.csail.mit.edu/papers/v3/blei03a.html). _Journal of Machine Learning Research_. **3**: 993–1022.
 
+**Griffiths, T. L. and Steyvers, M.** (2004). Finding scientific topics. _Proceedings of the National Academy of Sciences_, **101**(Suppl. 1): 5228–35 doi:10.1073/pnas.0307752101.
