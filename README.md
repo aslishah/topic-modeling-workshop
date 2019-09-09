@@ -370,9 +370,9 @@ stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.g
 
 
 
-![cluster analysis](img/genre_clusters.png.png)
+![cluster analysis](img/genre_clusters.png)
 
-![principal components analysis](img/genre_pca.png.png)
+![principal components analysis](img/genre_pca.png)
 
 
 ## Online tutorials
