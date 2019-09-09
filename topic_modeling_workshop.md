@@ -8,10 +8,10 @@
 ## Overview
 
 * [Introduction](#introduction)
-* [What is topic modeling?](#what-is-topic-modeling?)
+* [What is topic modeling?](#what-is-topic-modeling)
 * [Dataset preparation](#dataset-preparation)
 * [DARIAH Topic Explorer](#dariah-topic-explorer)
-* [R and the package Mallet](#rand-the-package-mallet)
+* [R and the package Mallet](#r-and-the-package-mallet)
 * [Online tutorials](#online-tutorials)
 * [Bibliography](#bibliography)
 * [References](#references)
@@ -24,9 +24,9 @@
 
 ## Introduction
 
-This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with gneral concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [Online tutorials](##online-tutorials). Also, the tutorial itself is supplemented by [this presentation](link-to-the-presentation), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
+This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with gneral concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [Online tutorials](#online-tutorials). Also, the tutorial itself is supplemented by [this presentation](https://computationalstylistics.github.io/topic-modeling-workshop/presentation/intro_to_topic_models.html), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
 
-The tutorial will cover basic functionalities of the [DARIAH topic explorer] (https://dariah-de.github.io/TopicsExplorer/) software. As a dummy dataset, the Shakesperean canon will be used in the form of [raw text files](link-to-the-corpus). In the second part, the same dataset will be used to train a topic model using the programming language R and the package [R mallet]((https://cran.r-project.org/web/packages/mallet/index.html).
+The tutorial will cover basic functionalities of the [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/) software. As a dummy dataset, the Shakesperean canon will be used in the form of [raw text files](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus). In the second part, the same dataset will be used to train a topic model using the programming language R and the package [R mallet](https://cran.r-project.org/web/packages/mallet/index.html).
 
 
 
@@ -103,9 +103,9 @@ is considered to be one text sample,
 
 ## DARIAH Topic Explorer
 
-- DARIAH topic explorer (https://dariah-de.github.io/TopicsExplorer/). 
+- [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/). 
 - 
-- download an executable file (https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching the operating system.
+- download the [executable file](https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching the operating system.
 
 ![DARIAH Topics Explorer](https://raw.githubusercontent.com/DARIAH-DE/TopicsExplorer/master/docs/img/application-screenshot.png)
 
@@ -428,7 +428,7 @@ stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.g
 
 ## References
 
-**Blei, D.M.** (2012). Probabilistic topic models. _Communications of the ACM_, **55**(4): 77–84.
+**Blei, D.M.** (2012). [Probabilistic topic models](http://delivery.acm.org/10.1145/2140000/2133826/p77-blei.pdf). _Communications of the ACM_, **55**(4): 77–84.
 
 **Blei, D.M., Ng, A.Y. and Jordan, M.I.** (2003). [Latent Dirichlet allocation](http://jmlr.csail.mit.edu/papers/v3/blei03a.html). _Journal of Machine Learning Research_. **3**: 993–1022.
 
