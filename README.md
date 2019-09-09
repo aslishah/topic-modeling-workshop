@@ -1,6 +1,9 @@
 # A Workshop in Topic Modeling
 
 
+**Author:** Maciej Eder<br/>
+**License:** [GPL-3](https://opensource.org/licenses/GPL-3.0)
+
 
 
 
@@ -24,7 +27,7 @@
 
 ## Introduction
 
-This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with gneral concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [Online tutorials](#online-tutorials). Also, the tutorial itself is supplemented by [this presentation](https://computationalstylistics.github.io/presentations/topic_modeling_intro/intro_to_topic_models.html), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
+This tutorial provides a very concise introduction to topic modeling. It is assumed that the user exhibits some familiarity with general concepts behind topic models. It might be profitable to consult the resources listed at the bottom of this document, in the section [**Online tutorials**](#online-tutorials). Also, the tutorial itself is supplemented by [this presentation](https://computationalstylistics.github.io/presentations/topic_modeling_intro/intro_to_topic_models.html), in which possible applications of topic modeling are discussed, and a few introductory remarks about the method itself are provided.
 
 The tutorial will cover basic functionalities of the [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/) software. As a dummy dataset, the Shakesperean canon will be used in the form of [raw text files](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus). In the second part, the same dataset will be used to train a topic model using the programming language R and the package [R mallet](https://cran.r-project.org/web/packages/mallet/index.html).
 
@@ -35,15 +38,15 @@ The tutorial will cover basic functionalities of the [DARIAH topic explorer](htt
 
 ## What is topic modeling?
 
-Topic modeling is a machine-learning technique aimed at discovering hidden thematic structures in large collections of texts. What makes this technique special, is that it belongs to distributional semantics paradigm – this means that the method doesn’t rely on any prior knowledge about word meanings, to discover semantic relations between groups of words referred to as _topics_.
+Topic modeling is a machine-learning technique aimed at discovering hidden thematic structures in large collections of texts. What makes this technique special, is that it belongs to distributional semantics paradigm – this means that the method doesn’t rely on any prior knowledge about word meanings. Rather, it uses the information about word frequencies and word co-occurrencies, to discover semantic relations between groups of words referred to as _topics_.
 
-Topic modeling takes advantage of the simple assumption that certain words tend to occur more frequently in a text covering a given topic than in other texts. Next, texts are usually about many topics. Consequently, a topic is a recurring pattern of co-occurring words. To quote David Blei (2012: 78), one of the authors of the topic modeling technique:
+Topic modeling takes advantage of the simple assumption that certain words tend to occur more frequently in a text about a given topic, than in other texts. Next, texts are usually about many topics. Consequently, a topic is a recurring pattern of co-occurring words. To quote David Blei (2012: 78), one of the authors of the topic modeling technique:
 
 > We formally define a _topic_ to be a distribution over a fixed vocabulary. For example, the _genetics_ topic has words about genetics with high probability and the evolutionary biology topic has words about _evolutionary biology_ with high probability. 
 
 More specifically, each topic in a corpus is a distribution over words, each text is a mixture of corpus-wide topics, and each word is drawn from one of those topics. In the real world, however, we only observe the texts and the words occurring in the texts; all the other characteristics of the texts are hidden variables, to be inferred by a generative model.
 
-There are a few methods to perform topic modeling, but the most popular one is LDA, or latent Dirichlet allocation (Blei, 2003). The LDA method has several implementations; the following ones are relatively simple to use, and thus recommended for humanities scholars: 
+There are a few methods to perform topic modeling, the most popular of them being LDA, or latent Dirichlet allocation (Blei, 2003). The LDA method has several implementations, the following ones are relatively simple to use, and thus recommended for humanities scholars: 
 
 * [Mallet](http://mallet.cs.umass.edu/) (Java)
 * [Stanford Topic Modeling Toolbox](https://nlp.stanford.edu/software/tmt/tmt-0.4/) (Java)
@@ -51,51 +54,46 @@ There are a few methods to perform topic modeling, but the most popular one is L
 * [lda](https://github.com/lda-project/lda) (Python)
 * [topicmodels](https://cran.r-project.org/web/packages/topicmodels/index.html) (R)
 * [Mallet invoked from R](https://cran.r-project.org/web/packages/mallet/index.html) (R + Java)
-* [**DARIAH Topic Explorer**](https://dariah-de.github.io/TopicsExplorer/) (standalone)
+* [DARIAH Topic Explorer](https://dariah-de.github.io/TopicsExplorer/) (standalone)
 
-
+In this tutorial, we’ll focus mosty on the simplest tool listed above, namely DARIAH Topic Explorer.
 
 
 
 
 ## Dataset preparation
 
-Topic modeling is designed to analyze large collections of texts (documents). Leaving aside the question how large such a collection should be, we’ll focus on a dummmy corpus containing the works by Shakespeare. 
+Topic modeling is designed to analyze large collections of texts (documents). Leaving aside the question how large such a collection should be, we’ll focus on a dummmy corpus containing the works by Shakespeare. It can be found in the current GitHub repository, in the subdirectory [`corpus`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus).
 
-- in the GitHub repository
+The files contain plain texts, one play per file. The procedure will automatically tokenize the strings of characters into words (let's skip here a non-trivial discussion of how the contractions and/or compound words should be treated), which is followed by punctuation marks removal, as well as by convertion of capital letters into lowercase.
 
-What is important to know before a topic modeling algorithm is applied, is that **the order of words** is not relevant for the method. A text sample becomes a “bag of words”, in which only word frequencies matter. Essentially, this means that the relation between any adjacent words in _Hamlet_ by Shakespeare 
+What is important to know before a topic modeling algorithm is applied, is that the order of words is not relevant for the method. A text sample becomes a “bag of words”, in which only word frequencies and word co-occurrencies matter. Essentially, this means that the relation between any adjacent words in _Hamlet_ by Shakespeare is as meaningful as the relation between the very first and the very last word from the tragedy. Certainly, this holds when _Hamlet_ is analyzed as a monolithic text; different word co-occurence patterns will be discovered when the text is sliced into smaller samples. We’ll compare the quality of topic models based on entire texts and on chunked texts below. The subdirectory [`corpus_1000-word_samples`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus_1000-word_samples) contains the Shakespearean corpus with texts sliced into 1000-word chunks. 
 
-is considered to be one text sample, 
+Secondly, the order of documents (be it texts or text chunks) is not relevant for the method. It doesn’t matter if _Hamlet_ is analyzed as the first or as the last document in the collection. This is a good news for us, because one doesn’t need to care about filenames of the documents: should the files be alphabetized or not, it won’t affect the model. Thirdly, the number of topics is fixed and known in advance.
 
-* The order of documents is not relevant
-* The number of topics is fixed and known in advance
-
----
+Once the pre-processing of the input texts is done, the procedure optionally exludes some words, referred to as stopwords, from the analysis. This is highly recommended to exclude at least very frequent function words (articles, particles, prepositions), but also some common adverbs and pronouns. A generic list of English stopwords can be found [here](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/en.txt). It begins as follows:
 
 
+```
+a
+able
+about
+above
+according
+accordingly
+across
+actually
+after
+afterwards
+again
+against
+all
+allow
+allows
+almost
+alone
+```
 
-- bag of words
-
-- works automatically without any prior knowledge about word meanings or grammar.
-
-- text chunking
-- optimal number of topics
-
-
-
-1. Przygotowanie tekstów:
-   - usunięcie interpunkcji
-
-   - usunięcie wielkich liter
-
-   - wykluczenie wyrazów synsemantycznych
-
-     Lepsze rezultaty osiąga się poprzez usunięcie wyrazów na podstawie wartości `idf`. Różnica ta wzrasta wraz ze wzrostem liczby tematów. (Schofield et al. 2017)
-
-2.  Określenie parametrów modelu.
-
-   - większa liczba tematów jest trudniej interpretowalna przez ludzi (Chang 2009)
 
 
 
@@ -103,26 +101,25 @@ is considered to be one text sample,
 
 ## DARIAH Topic Explorer
 
-- [DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/). 
-- 
-- download the [executable file](https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching the operating system.
+[DARIAH topic explorer](https://dariah-de.github.io/TopicsExplorer/) is a very simple tool, yet somewhat limited when it comes to its functionalities. It requires no programming knowledge and no additional software needs to be installed. In short, it’s a perfect choice to train your first topic model in no time, but sooner of later you’ll probably decide to switch to some more sophisticated options. E.g., check the [next section](#r-and-the-package-mallet) of this tutorial. To use DARIAH Topic Explorer:
+
+* Download the [executable file](https://github.com/DARIAH-DE/TopicsExplorer/releases/tag/v2.0) matching the operating system,
+* Launch the program,
+* Choose the text files to be scrutinized by the LDA algorithm: in our case, it will be the texts by Shakespeare to be found in the subdirectory [`corpus`](https://github.com/computationalstylistics/topic-modeling-workshop/tree/master/shakespeare_genre/corpus).
+* This is basically enough to start building a topic model, although some additional tweaks will help improve the model’s quality.
+
 
 ![DARIAH Topics Explorer](https://raw.githubusercontent.com/DARIAH-DE/TopicsExplorer/master/docs/img/application-screenshot.png)
 
 
-
-
-
-![document-topic distribution](https://raw.githubusercontent.com/DARIAH-DE/TopicsExplorer/master/docs/img/document-topic-distributions.png)
-
+The default settings do provide some results, but we’d love to have more control on the parameters of the model. First comes the list of stopwords. You can either specify a number of the most frequent words (the default being 100), or provide your own list of stopwords. 
 
 
 
 
-- launch the program
-- choose the text files to be scrutinized by the LDA algorithm
-- in our case, it will be the texts by Shakespeare to be found in the subdirectory `corpus`
-- choose 100 most frequent words
+
+
+
 
 
 
@@ -212,12 +209,31 @@ Same about words such as _enter_ or _exeunt_
 
 
 
+![document-topic distribution](https://raw.githubusercontent.com/DARIAH-DE/TopicsExplorer/master/docs/img/document-topic-distributions.png)
+
+
+
+
+
+2.  Określenie parametrów modelu.
+
+   - większa liczba tematów jest trudniej interpretowalna przez ludzi (Chang 2009)
+
+   
+- text chunking
+- optimal number of topics
+
+
+
+
+
+
+
+
+
 ## R and the package Mallet
 
-
-
-
-
+No matter how simple the DARIAH Topic Explorer is as a tool, it is also rather limited in terms of its functionalities. To have more (much more!) control on the entire proces of text pre-processing, chunking, excluding stopwords, training the topic model, visualizing the topics, observing the correlations between documents, etc., you might want to dive into the fascinating world of programming languages. Below, a litle bit of coding in R is shown. The code is based on the package `mallet` (an R wrapper for the original [Mallet](http://mallet.cs.umass.edu/) written in Java). The text pre-processing stage, however, is done with some help of the package `stylo`, whereas wordcloud visualizations of the topics is taken over by the package `wordclouds`. These packages need to be installed alongside the R shell. Please mind the first lines of the following code, where the parameters of the model, including the number of topics, the sample size, and the directory containing text files are specified:
 
 
 
@@ -296,22 +312,15 @@ rownames(doc.topics) = names(deparsed.corpus)
 colnames(doc.topics) = 1:length(doc.topics[1,])
 ```
 
-
-
-
-
-
-
-
+At this point, the model is trained. The proportions of words in particular topics are stored in the variable `topic.words`, whereas the proportions of topics in documents (text chunks, to be precise) are in the variable `doc.topics`. What about producing a wordcloud out of 50 top words from the 6th topic? Copy-paste the following snippet:
 
 
 ``` R
-
 ############## Exploration of the dataset
 
 # to get N words from Xth topic
 no.of.words = 50
-topic.id = 1
+topic.id = 6
 current.topic = sort(topic.words[topic.id,], decreasing = T)[1:no.of.words]
 
 # to make a wordcloud out of the most characteristic topics
@@ -321,7 +330,11 @@ wordcloud(names(current.topic), current.topic, random.order = FALSE, rot.per = 0
 
 
 
+![topic 6](img/topic_6.png)
+
+
 Please keep in mind that in your case, the numbers assigned to the topics will probably be different. This is due to the fact that the LDA algorithm assigns the topics IDs randomly. Moreover, the word proportions in particular topics might differ as well, due to the random seeding of the word proportions at the first interation.
+
 
 
 
