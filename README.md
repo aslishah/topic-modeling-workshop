@@ -185,14 +185,6 @@ Try to play with the above three different stopword lists, to see how the respec
 
 
 
-   
-- text chunking
-- optimal number of topics
-
-
-
-
-
 
 
 
