@@ -52,6 +52,7 @@ There are a few methods to perform topic modeling, the most popular of them bein
 * [Stanford Topic Modeling Toolbox](https://nlp.stanford.edu/software/tmt/tmt-0.4/) (Java)
 * [gensim](https://radimrehurek.com/gensim/) (Python)
 * [lda](https://github.com/lda-project/lda) (Python)
+* [scikit-learn](http://scikit-learn.org/dev/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) (Python)
 * [topicmodels](https://cran.r-project.org/web/packages/topicmodels/index.html) (R)
 * [Mallet invoked from R](https://cran.r-project.org/web/packages/mallet/index.html) (R + Java)
 * [DARIAH Topic Explorer](https://dariah-de.github.io/TopicsExplorer/) (standalone)
@@ -142,7 +143,7 @@ That curtsy to them, do them reverence,
 As they fly by them with their woven wings.
 ```
 
-We would definitely like to exlude the words `ANTONIO` and `SALARINO` from the analysis, because they will bias the results. By extention, we’d like to exclude the all-capital-letter words. It solves the problem, but only partially. The following fragment from _Hamlet_ shows a different way of indicating the speakers:
+We would definitely like to exlude the words `ANTONIO` and `SALARINO` from the analysis, because they will bias the results. By extention, we’d like to exclude all the speakers’ names, in our case: strings of CAPITAL LETTERS. It solves the problem, but only partially. The following fragment from _Hamlet_ shows a different way of indicating the speakers:
 
 ```
 SCENE. Elsinore.
@@ -315,64 +316,61 @@ for(i in 1 : no.of.topics) {
 
 Caveat emptor: the files will be saved in your current directory without checking what’s in that directory. It can clutter your hard-drive and/or overwrite the exsting files!
 
+We move now to assessing the proportions of topics in particular text samples. The Shakespearean corpus contains 41 texts, but since 1000-word samples were used, the total number of documents is now **{............}**. To get their names, type:
 
+``` R
+rownames(doc.topics)
+```
 
-
-
-`rownames(doc.topics)`
-
-
-
-plot a sample from _Hamlet_ (sample #23, which is sample #750)
-
-the ending of the King Lear (808)
-
-the climax of the _Romeo and Juliet_ (880)
+As we can see, the final scene of _Romeo and Juliet_ is in the sample 880. To see which topics are represented in the climax of the tragedy, plot the proportions of topics for the sample 880:
 
 
 ``` R
-
 # to plot the proportions of topics in the Xth sample
 no.of.sample = 880
-plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probability", ylim = c(0, 0.5), main = rownames(doc.topics)[no.of.sample], lwd = 5, col = "green")
-
+plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probability", 
+     ylim = c(0, 0.5), main = rownames(doc.topics)[no.of.sample], lwd = 5, 
+     col = "green")
 ```
-
 
 ![Romeo and Juliet](img/topics_romeo.png)
 
 
-What about the beginning of _A Midsummer Night’s Dream_?
-
+Now, what about the beginning of _A Midsummer Night’s Dream_? It’s the 626th sample in the dataset. The above snippet can be reused of course, except that the sample’s ID needs to be adjusted, and perhaps also the color of the plot:
 
 
 ```R
 # to plot the proportions of topics in the Xth sample
 no.of.sample = 626
-plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probability", ylim = c(0, 0.5), main = rownames(doc.topics)[no.of.sample], lwd = 5, col = "blue")
-
+plot(doc.topics[no.of.sample,], type = "h", xlab = "topic ID", ylab = "probability", 
+     ylim = c(0, 0.5), main = rownames(doc.topics)[no.of.sample], lwd = 5, 
+     col = "blue")
 ```
 
 
 ![A Midsummer Night’s Dream](img/topics_dream.png)
 
 
+Since each sample is represented by the proportions of 25 topics (as we’ve just seen), such proportions can be used as features for classification methods. A task of grouping the Shakespearean samples according their topic densities might be performed, to test how robust is the traditional division into five genres – tragedies, commedies, histories, romances, and poetry. The more coherent the resulting clusters, the more distinct the genres (at least thematically). Cluster analysis can be performed via the following function:
 
 
 ``` R
-
 stylo(frequencies = doc.topics, gui = FALSE, dendrogram.layout.horizontal = FALSE)
-
-stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR")
-
-stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR", text.id.on.graphs = "points")
 ```
-
-
 
 ![cluster analysis](img/genre_clusters.png)
 
+
+The same task, this time solved using the principal components analysis method:
+
+``` R
+stylo(frequencies = doc.topics, gui = FALSE, analysis.type = "PCR")
+```
+
 ![principal components analysis](img/genre_pca.png)
+
+The same classification problem once more, this time approached using bootstrap consensus networks:
+
 
 ![consensus network](img/topics_in_docs.png)
 
