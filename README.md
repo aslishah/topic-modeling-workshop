@@ -2,7 +2,7 @@
 
 
 **Author:** Maciej Eder<br/>
-**License:** [GPL-3](https://opensource.org/licenses/GPL-3.0)
+**License:** [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/)
 
 
 
@@ -170,7 +170,7 @@ And I am sick at heart.
 ​
 ```
 
-A very rough list of Shakespearean names, including the abbreviated forms, are saved into the file [`names_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/names_shakespeare.txt). Try to add these names to the stopword list and re-traing the model. Again, the topics seem to be better, or at least more content-related, but still something is wrong here... To cut long story short, there are still some stopwords to be removed, and these include mostly archaic forms (e.g. _thou_, _thy_, _thee_, _hath_, _doth_), stage directions (e.g. _enter_ or _exeunt_), and some corpus-specific contractions. The list of these stopwords can be found in the file [`stopwords_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/stopwords_shakespeare.txt). 
+A very rough list of Shakespearean names, including the abbreviated forms, are saved into the file [`names_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/names_shakespeare.txt). Try to add these names to the stopword list and re-train the model. Again, the topics seem to be better, or at least more content-related, but still something is wrong here... To cut long story short, there are still some stopwords to be removed, and these include mostly archaic forms (e.g. _thou_, _thy_, _thee_, _hath_, _doth_), stage directions (e.g. _enter_ or _exeunt_), and a number of corpus-specific contractions. The list of these stopwords can be found in the file [`stopwords_shakespeare.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/stopwords_shakespeare.txt). 
 
 Try to play with the above three different stopword lists, to see how the respective models differ. Try also to combine all the stopwords into one – or simply use the file [`combined_stopwords.txt`](https://github.com/computationalstylistics/topic-modeling-workshop/blob/master/shakespeare_genre/combined_stopwords.txt). We’re definitely getting somewhere, even if an uneasy question becomes more and more evident: So, do I have to manipulate my stopword list until my topics look OK? Well, there exist more sophisticated ways of excluding stopwords, such as tf/idf weighting, but they won’t be covered in this tutorial. 
 
@@ -370,23 +370,23 @@ The same classification problem once more, this time approached using bootstrap 
 
 ## Online tutorials
 
-* [Oh A. (2010). Topic Models Applied to Online News and Reviews](https://www.youtube.com/watch?v=1wcX4fEdNUo) (YouTube)
-* [Mimno (2012), Topic Modeling Workshop](https://vimeo.com/53080123) (Vimeo)
-* [Jockers, Nelson (2012), Topic Modeling Workshop](https://vimeo.com/52959139) (Vimeo)
-* [Guldi, Johnson-Roberson (2012), Topic Modeling Workshop](https://vimeo.com/53078693) (Vimeo)
-* [Brett M. (2012), Topic Modeling: A Basic Introduction](http://journalofdigitalhumanities.org/2-1/topic-modeling-a-basic-introduction-by-megan-r-brett/)
-* [Jockers, The LDA Buffet is Now Open](http://www.matthewjockers.net/2011/09/29/the-lda-buffet-is-now-open-or-latent-dirichlet-allocation-for-english-majors/) (LDA explained in a form of a literary fable)
-* [Underwood, Topic modeling made just simple enough](https://tedunderwood.com/2012/04/07/topic-modeling-made-just-simple-enough/)
+* Oh A. (2010). [Topic models applied to online news and reviews](https://www.youtube.com/watch?v=1wcX4fEdNUo) (YouTube)
+* Mimno, David (2012). [Topic modeling workshop](https://vimeo.com/53080123) (Vimeo)
+* Jockers, Matthew & Nelson, Robert (2012). [Topic modeling workshop](https://vimeo.com/52959139) (Vimeo)
+* Guldi, Jo & Johnson-Roberson, Christopher (2012). [Topic modeling workshop](https://vimeo.com/53078693) (Vimeo)
+* Brett M. (2012). [Topic Modeling: A Basic Introduction](http://journalofdigitalhumanities.org/2-1/topic-modeling-a-basic-introduction-by-megan-r-brett/)
+* Jockers, Matthew (2011). [The LDA Buffet is Now Open](http://www.matthewjockers.net/2011/09/29/the-lda-buffet-is-now-open-or-latent-dirichlet-allocation-for-english-majors/) (LDA explained in a form of a literary fable)
+* Underwood, Ted (2012). [Topic modeling made just simple enough](https://tedunderwood.com/2012/04/07/topic-modeling-made-just-simple-enough/)
 * [Topic Modeling in the Humanities](https://mith.umd.edu/topic-modeling-in-the-humanities-an-overview/)
-* [Scott Weingart’s posts on Topic Modeling](http://scottbot.net/tag/topic-modeling/)
-* [David Blei’s webpage](http://www.cs.columbia.edu/~blei/topicmodeling.html)
+* Scott Weingart’s [posts on Topic Modeling](http://scottbot.net/tag/topic-modeling/)
+* David Blei’s [webpage](http://www.cs.columbia.edu/~blei/topicmodeling.html)
 * [Text Mining with R](https://www.tidytextmining.com/)
 * [Topic Models Learning and R Resources](https://github.com/trinker/topicmodels_learning)
 
 
 ## Bibliography
 
-* [Topic Modeling Bibliography](https://mimno.infosci.cornell.edu/topics.html)
+* Blei, David. [Topic Modeling Bibliography](https://mimno.infosci.cornell.edu/topics.html)
 
 
 
